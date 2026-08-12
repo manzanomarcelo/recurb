@@ -19,7 +19,7 @@ export async function GET() {
       return { ...role, permissions: permissions.map((p: any) => p.permission) };
     }));
 
-    return NextResponse.json(rolesWithPermissions);
+    return NextResponse.json({ data: rolesWithPermissions });
   } catch (error: any) {
     console.error('Roles API error:', error);
     return NextResponse.json({ error: error.message || 'Unauthorized' }, { status: 403 });
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ id: roleId, name, description, permissions });
+    return NextResponse.json({ data: { id: roleId, name, description, permissions } });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create role' }, { status: 500 });
   }

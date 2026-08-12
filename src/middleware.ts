@@ -20,12 +20,19 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = request.cookies.get("auth-token")?.value;
-  
-  // If no token and not on auth pages, redirect to login
-  if (!token && !request.nextUrl.pathname.startsWith("/auth")) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
-  }
+// Allow auth pages and auth API routes without requiring a token
+if (
+  request.nextUrl.pathname.startsWith("/auth") ||
+  request.nextUrl.pathname.startsWith("/api/auth")
+) {
+  return NextResponse.next();
+}
+
+const token = request.cookies.get("auth-token")?.value;
+
+if (!token) {
+  return NextResponse.redirect(new URL("/auth/login", request.url));
+}
   
   // Allow access to auth pages without token
   if (request.nextUrl.pathname.startsWith("/auth")) {
