@@ -28,7 +28,7 @@ export async function PATCH(request: Request) {
 
     const db = await getDatabase();
     await db.execute(
-      "UPDATE feature_flags SET enabled = ?, updatedAt = ? WHERE key = ?",
+      "UPDATE feature_flags SET enabled = ?, updated_at = ? WHERE key = ?",
       [enabled ? 1 : 0, new Date().toISOString(), key]
     );
 
